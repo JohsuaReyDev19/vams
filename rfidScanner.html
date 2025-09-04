@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFID Scanner Realtime</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex justify-center items-center h-screen bg-gray-100">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+        <h2 class="text-xl font-bold mb-4">RFID Scanner</h2>
+        <input type="text" id="rfidInput" class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Tap RFID Card Here" autocomplete="off">
+        <div id="rfidResult" class="mt-4 text-lg font-semibold text-blue-600"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            let scannedData = "";
+            // Detect RFID input (works if RFID scanner acts as a keyboard)
+            $(document).on("keypress", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    if (scannedData.trim() !== "") {
+                        $("#rfidInput").val(scannedData);
+                        $("#rfidResult").html("RFID Detected: " + scannedData);
+                        
+                        // Send data to the server using AJAX
+                        $.ajax({
+                            url: "process_rfid.php",
+                            type: "POST",
+                            data: { rfid: scannedData },
+                            success: function(response) {
+                                console.log("Server Response: ", response);
+                            }
+                        });
+
+                        scannedData = ""; // Reset for next scan
+                    }
+                } else {
+                    scannedData += event.key; // Capture input characters
+                }
+            });
+        });
+    </script>
+</body>
+</html>

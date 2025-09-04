@@ -1,0 +1,67 @@
+CREATE TABLE access_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    rfid_tag VARCHAR(50) NOT NULL,
+    owner_name VARCHAR(255) NOT NULL,
+    plate_number VARCHAR(20) NOT NULL,
+    vehicle_type VARCHAR(50) NOT NULL,
+    status ENUM('Entry', 'Exit') NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (rfid_tag) REFERENCES vehicles(rfid_tag) ON DELETE CASCADE
+); 
+
+CREATE TABLE admin_actions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    vehicle_id INT NOT NULL,
+    admin_id INT,
+    action ENUM('Approved', 'Rejected') NOT NULL,
+    action_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE,
+    FOREIGN KEY (admin_id) REFERENCES admin_accounts(id) ON DELETE SET NULL
+); 
+
+CREATE TABLE admin_accounts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    full_name VARCHAR(255),
+    email VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+); 
+
+CREATE TABLE ojt_vehicles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    vehicle_id INT NOT NULL,
+    ojt_name VARCHAR(255) NOT NULL,
+    company_name VARCHAR(255),
+    supervisor_name VARCHAR(255),
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE
+); 
+
+CREATE TABLE faculty_vehicles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    vehicle_id INT NOT NULL,
+    faculty_name VARCHAR(255) NOT NULL,
+    department VARCHAR(100),
+    position VARCHAR(100),
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE
+); 
+
+CREATE TABLE student_vehicles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    vehicle_id INT NOT NULL,
+    student_name VARCHAR(255) NOT NULL,
+    student_id_number VARCHAR(50),
+    course VARCHAR(100),
+    year_level VARCHAR(10),
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE
+); 
+
+CREATE TABLE vehicles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    plate_number VARCHAR(20) UNIQUE NOT NULL,
+    vehicle_type VARCHAR(50) NOT NULL,
+    vehicle_image VARCHAR(255),
+    rfid_tag VARCHAR(50) UNIQUE,
+    status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

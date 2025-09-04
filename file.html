@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFID Vehicle Access Sequence Diagram</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #diagram {
+            display: inline-block;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h2>RFID Vehicle Access Monitoring System - Sequence Diagram</h2>
+    <div id="diagram"></div>
+    <script>
+        var diagram = `
+            participant "Vehicle" as V
+            participant "RFID Scanner" as Scanner
+            participant "Web Application" as App
+            participant "Database" as DB
+            participant "Admin" as Admin
+
+            V->Scanner: Scan RFID Tag
+            Scanner->App: Send Tag ID
+            App->DB: Verify Tag ID
+            DB->App: Valid/Invalid Response
+            alt Tag Valid
+                App->Scanner: Open Gate
+                App->DB: Log Entry Time
+            else Tag Invalid
+                App->Scanner: Deny Access
+            end
+
+            Admin->App: View Entry Logs
+            App->DB: Fetch Entry Data
+            DB->App: Return Logs
+            App->Admin: Display Logs
+
+            V->Scanner: Scan RFID Tag (Exit)
+            Scanner->App: Send Tag ID
+            App->DB: Verify Tag ID
+            DB->App: Valid/Invalid Response
+            alt Tag Valid
+                App->Scanner: Open Exit Gate
+                App->DB: Log Exit Time
+            else Tag Invalid
+                App->Scanner: Deny Exit
+            end
+
+            Admin->App: View Exit Logs
+            App->DB: Fetch Exit Data
+            DB->App: Return Logs
+            App->Admin: Display Logs
+        `;
+        var diagramContainer = document.getElementById("diagram");
+        diagramContainer.innerHTML = "";
+        Diagram.parse(diagram).drawSVG("diagram", {theme: 'simple'});
+    </script>
+</body>
+</html>
