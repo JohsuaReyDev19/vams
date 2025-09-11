@@ -199,8 +199,8 @@ document.getElementById('vehicleForm').addEventListener('submit', function (e) {
                     });
                 } else {
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
+                        icon: 'warning',
+                        title: 'warning!',
                         text: data.message,
                         confirmButtonColor: '#d33',
                         confirmButtonText: 'Try Again'
