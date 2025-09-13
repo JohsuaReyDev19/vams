@@ -48,8 +48,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     </div>
                     <div class="hidden md:flex space-x-6 items-center relative">
 
-                        <a href="./scan_rfid.php" class="block hover:underline cursor-pointer">Scan Vehicle</a>
-                        <a href="./visitor_entry.php" class="block hover:underline cursor-pointer">Visitor's Entry</a>
+                        <a class="btnscan block hover:underline cursor-pointer">Scan Vehicle</a>
+                        <a class="btnvisitor block hover:underline cursor-pointer">Visitor's Entry</a>
 
                         <!-- Dropdown Button -->
                         <div class="relative group">
@@ -62,8 +62,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
                             <!-- Dropdown Menu -->
                             <div class="absolute right-0 w-40 bg-white border border-gray-200 rounded shadow-md hidden group-hover:block z-50">
-                                <a href="./register_form.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Vehicle Registration</a>
-                                <a href="./add_vehicle.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Add vehicle</a>
+                                <a class="btnpre block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Vehicle Registration</a>
+                                <a class="addVehicle block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Add vehicle</a>
                             </div>
                         </div>
 
@@ -103,9 +103,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </div>
             <div id="mobile-menu" class="md:hidden hidden px-4 pb-4 space-y-2">
                         <a class="btnscan block hover:underline cursor-pointer">Scan Vehicle</a>
-                        <a href="./visitor_entry.php" class="block hover:underline cursor-pointer">Visitor's Entry</a>
-                        <a href="./register_form.php" class="block hover:underline cursor-pointer">Registration</a>
-                        <a href="./add_vehicle.php" class="addVehicle block hover:underline cursor-pointer">Add vehicle</a>
+                        <a class="btnvisitor block hover:underline cursor-pointer">Visitor's Entry</a>
+                        <a class="btnpre block hover:underline cursor-pointer">Registration</a>
+                        <a class="addVehicle block hover:underline cursor-pointer">Add vehicle</a>
                         <a class="btnProfile block hover:underline cursor-pointer">My Profile</a>
                         <a href="../admin/database/logout.php" target="_blank"  class="btnvisitor block hover:underline flex justify-center items-center gap-1">
                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out-icon lucide-log-out"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
@@ -265,6 +265,22 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
         $('#mobile-menu').toggleClass('hidden');
     });
 
+    $('.btnpre').on('click', function () {
+        $('#pre-registered').removeClass('hidden');
+        $('#visitors-entry').addClass('hidden');
+        $('#scan-rfid').addClass('hidden');
+        $('#profile').addClass('hidden');
+        $('#showAddVehicle').addClass('hidden');
+    });
+
+    $('.btnvisitor').on('click', function () {
+        $('#visitors-entry').removeClass('hidden');
+        $('#pre-registered').addClass('hidden');
+        $('#scan-rfid').addClass('hidden');
+        $('#profile').addClass('hidden');
+        $('#showAddVehicle').addClass('hidden');
+    });
+
     $('.btnscan').on('click', function () {
         $('#scan-rfid').removeClass('hidden');
         $('#pre-registered').addClass('hidden');
@@ -279,6 +295,14 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
         $('#pre-registered').addClass('hidden');
         $('#visitors-entry').addClass('hidden');
         $('#showAddVehicle').addClass('hidden');
+    });
+
+    $('.addVehicle').on('click', function () {
+        $('#showAddVehicle').removeClass('hidden');
+        $('#profile').addClass('hidden');
+        $('#scan-rfid').addClass('hidden');
+        $('#pre-registered').addClass('hidden');
+        $('#visitors-entry').addClass('hidden');
     });
 </script>
 </body>
