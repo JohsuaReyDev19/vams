@@ -119,7 +119,7 @@ $name = htmlspecialchars(urldecode($name));
                                     type="tel" 
                                     id="contact" 
                                     class="mt-1 p-2 w-full border rounded-md"
-                                    pattern="[0-9]{11}" 
+                                    pattern="[0-9]{11}"
                                     maxlength="11"
                                     required
                                 >
@@ -129,7 +129,7 @@ $name = htmlspecialchars(urldecode($name));
 
                                 <label for="username" class="block text-sm font-medium text-gray-700 mt-4">Username</label>
                                 <input type="text" id="username" class="mt-1 p-2 w-full border rounded-md" required>
-                                <div class="flex justify-center hidden" id="error">
+                                <div class="flex justify-center" id="error">
                                     <p class="text-red-600 text-sm" id="message"></p>
                                 </div>
 
@@ -183,8 +183,8 @@ $name = htmlspecialchars(urldecode($name));
             <label for="username" class="block text-sm font-medium text-gray-700 mt-4">Username</label>
             <input type="text" id="username" name="username" class="mt-1 p-2 w-full border rounded-md" placeholder="Enter username" required>
 
-            <div class="flex justify-center hidden" id="error">
-                <p class="text-red-600 text-sm" id="message"></p>
+            <div class="flex justify-center" id="errorMessage">
+                <p class="text-red-600 text-sm" id="messageError"></p>
             </div>
 
             <input type="text" id="purpose" name="purpose" value="Security Personel" class="hidden">
@@ -355,7 +355,14 @@ $(document).on('submit', '#updateProfileForm', function(e) {
 
                 loadAdminAccounts();
             } else {
-                alert(response.message);
+                $('#message').text(response.message);
+                const errormessage = document.getElementById('message').innerText;
+
+                if(errormessage !== ''){
+                    setTimeout(() => {
+                        $('#message').text('');
+                    }, 3000);
+                }
             }
         },
         error: function() {
@@ -445,8 +452,16 @@ function showToast(message, type = "success") {
                         $('#createAccountForm')[0].reset();
                         $('#addModal').addClass('hidden');
                     } else {
-                        $('#error').removeClass('hidden');
-                        $('#message').text(res.message);
+                        $('#messageError').text(res.message);
+
+                        const errormessage = document.getElementById('messageError').innerText;
+
+                        if (errormessage !== '') {
+                            setTimeout(() => {
+                                $('#messageError').text('');
+                            }, 3000);
+                        }
+
                     }
                 },
                 error: function (xhr, status, error) {

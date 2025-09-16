@@ -102,7 +102,7 @@ if (empty($fields)) {
     exit;
 }
 
-/* === Duplicate year check === */
+/* === Overwrite existing year(s) === */
 $yearColLetter = array_search('year', $colMap, true);
 if ($yearColLetter !== false) {
     $yearValues = [];
@@ -116,17 +116,8 @@ if ($yearColLetter !== false) {
 
     if (!empty($yearValues)) {
         $placeholders = implode(',', array_fill(0, count($yearValues), '?'));
-        $stmtCheck = $pdo->prepare("SELECT DISTINCT year FROM student_list WHERE year IN ($placeholders)");
-        $stmtCheck->execute($yearValues);
-        $existingYears = $stmtCheck->fetchAll(PDO::FETCH_COLUMN);
-
-        if (!empty($existingYears)) {
-            echo json_encode([
-                'success' => false,
-                'message' => 'Import blocked: Year(s) already exist - ' . implode(', ', $existingYears)
-            ]);
-            exit;
-        }
+        $stmtDel = $pdo->prepare("DELETE FROM student_list WHERE year IN ($placeholders)");
+        $stmtDel->execute($yearValues);
     }
 }
 

@@ -455,11 +455,13 @@ function saveVehicleDetails() {
                 return response.json();
             })
             .then(data => {
-                if (data.success) {
-                    Swal.fire('Updated!', 'The vehicle details were updated successfully.', 'success');
+                if (data.message === 'Vehicle and owner info updated successfully') {
+                    alert(data.message)
+                    Swal.fire('Updated!',data.message, 'success');
                     fetchVehicleOwners();
                     closeEditModal();
-                } else {
+
+                } else if(data.message === 'RFID Sticker already exists for another vehicle'){
                     Swal.fire('Alert', data.message, 'warning');
                 }
             })

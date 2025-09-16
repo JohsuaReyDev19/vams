@@ -49,6 +49,19 @@ if ($checkRfid->num_rows > 0) {
 }
 $checkRfid->close();
 
+$checkRfid = $conn->prepare("SELECT id FROM registered_vehicles WHERE rfid_tag = ? AND id != ?");
+$checkRfid->bind_param("si", $rfid_tag, $id);
+$checkRfid->execute();
+$checkRfid->store_result();
+
+if ($checkRfid->num_rows > 0) {
+    echo json_encode(['success' => false, 'message' => 'RFID Sticker already exists for another vehicle']);
+    $checkRfid->close();
+    $conn->close();
+    exit;
+}
+$checkRfid->close();
+
 // ✅ Step 0.5: Check for duplicate plate number in vehicles table
 $checkPlate = $conn->prepare("SELECT id FROM vehicles WHERE license_plate = ? AND id != ?");
 $checkPlate->bind_param("si", $plate_number, $id);

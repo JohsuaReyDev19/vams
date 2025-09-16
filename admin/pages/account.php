@@ -71,6 +71,19 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                 <button id="databasebtn" class="flex items-center gap-1 px-3 py-2 font-semibold text-gray-500 hover:text-blue-500 transition" title="backup your database now">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database-backup"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 12a9 3 0 0 0 5 2.69"/><path d="M21 9.3V5"/><path d="M3 5v14a9 3 0 0 0 6.47 2.88"/><path d="M12 12v4h4"/><path d="M13 20a5 5 0 0 0 9-3 4.5 4.5 0 0 0-4.5-4.5c-1.33 0-2.54.54-3.41 1.41L12 16"/></svg>
                     Backup Database</button>
+                    <button id="importDatabaseBtn" class="flex items-center gap-1 px-3 py-2 font-semibold text-gray-500 hover:text-green-500 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database-import">
+                            <path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><ellipse cx="12" cy="5" rx="9" ry="3"/>
+                            <path d="M3 12a9 3 0 0 0 5 2.69"/><path d="M3 5v14a9 3 0 0 0 6.47 2.88"/>
+                        </svg>
+                        Import Database
+                    </button>
+
+                    <!-- Hidden file upload form -->
+                    <form id="importForm" action="../backend/import.php" method="POST" enctype="multipart/form-data" class="hidden">
+                        <input type="file" name="sqlfile" id="sqlfile" accept=".sql" required>
+                    </form>
             </div>
         </div>
         <hr>
@@ -197,17 +210,105 @@ $(document).ready(function () {
         e.preventDefault();
 
         Swal.fire({
-            icon: "info",
-            title: "Preparing Backup...",
-            text: "Please wait while we generate your database backup.",
-            showConfirmButton: false,
-            timer: 3000
-        }).then(() => {
-            // After alert closes → start download
-            window.location.href = "../backend/backup.php";
+            title: "Are you sure?",
+            text: "Generate your database backup!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, backup it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Preparing Backup...",
+                    text: "Please wait while we generate your database backup.",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: () => {
+                        Swal.showLoading(); // 🔄 show spinner
+                    },
+                    timer: 3000 // 3 seconds loading
+                }).then(() => {
+                    // Start backup download
+                    window.location.href = "../backend/backup.php";
+
+                    // Show success after starting download
+                    Swal.fire({
+                        icon: "success",
+                        title: "Backup Complete!",
+                        text: "Your database backup has been generated successfully.",
+                        timer: 2500,
+                        showConfirmButton: false
+                    });
+                });
+            }
         });
     });
 });
+
+
+
+
+$(document).ready(function () {
+    $("#importDatabaseBtn").on("click", function () {
+        $("#sqlfile").click(); // open file selector
+    });
+
+    $("#sqlfile").on("change", function () {
+        let formData = new FormData($("#importForm")[0]);
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This will overwrite your current database with the uploaded backup!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, import it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading modal (3–5 sec)
+                Swal.fire({
+                    title: "Importing...",
+                    text: "Please wait while we restore your database.",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                    timer: 5000 // ⏳ 5 seconds (you can change to 3000 for 3 sec)
+                });
+
+                // Send AJAX after short delay
+                setTimeout(() => {
+                    $.ajax({
+                        url: "../backend/import.php",
+                        type: "POST",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success!",
+                                text: response,
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                location.reload(); // refresh page
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire("Error!", "Import failed: " + error, "error");
+                        }
+                    });
+                }, 3000); // wait 3 seconds before sending AJAX
+            }
+        });
+    });
+});
+
+
 </script>
 
   <script>
