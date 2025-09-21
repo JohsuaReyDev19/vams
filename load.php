@@ -38,7 +38,7 @@
 <body>
 
     <div class="loader"></div><br>
-    <h3>Loading pages...</h3>
+    <h3>loading pages...</h3>
 
     <script>
         // Redirect after 3 seconds
