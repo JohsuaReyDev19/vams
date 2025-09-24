@@ -5,7 +5,7 @@ import threading
 import os
 
 TAG_FILE = "rfid_tag.txt"
-TAG_TIMEOUT = 5  # time in seconds before auto-clearing tag
+TAG_TIMEOUT = 2  # time in seconds before auto-clearing tag
 last_written_time = 0
 last_epc = None
 cleared = True

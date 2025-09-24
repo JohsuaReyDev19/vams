@@ -316,6 +316,9 @@ let lastScannedTag = "";
 
                       setTimeout(() => {
                         location.reload();
+                        // document.getElementById("rfid_input").value = '';
+                        // document.getElementById("tagDisplay").innerText = '';
+                        // document.getElementById("scan_message").innerText = '';
                     }, 10000);
                     
                 } else {
@@ -324,6 +327,9 @@ let lastScannedTag = "";
                     
                     setTimeout(() => {
                         location.reload();
+                        // document.getElementById("rfid_input").value = '';
+                        // document.getElementById("tagDisplay").innerText = '';
+                        // document.getElementById("scan_message").innerText = '';
                     }, 10000);
                 }
             },
@@ -364,7 +370,6 @@ let lastScannedTag = "";
         })
         .catch(err => console.error("RFID Poll Error:", err));
     }
-
 
     $(document).ready(function() {
       limit = parseInt($('#limitSelect').val());
