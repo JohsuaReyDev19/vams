@@ -1,5 +1,5 @@
 <div class="max-w-6xl mx-auto space-y-8">
-  <div class="bg-white shadow rounded-lg p-6 mb-4">
+  <div class="bg-white shadow p-6 mb-4">
     <h2 class="text-xl font-semibold text-gray-900">Add Vehicle to Owner</h2>
     <form id="addVehicle" method="POST" class="space-y-4">
 

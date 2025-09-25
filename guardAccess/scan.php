@@ -64,8 +64,8 @@
   <!-- 🚫 Mobile Warning Overlay -->
 
   <!-- ✅ Main App Content -->
-  <div class="flex items-center justify-center bg-gray-200 bg-opacity-80">
-    <div class="bg-white rounded-2xl p-6 w-[90vw] max-w-[1200px]">
+  <div class="flex items-center justify-center  bg-opacity-80">
+    <div class="bg-white  p-6 w-[90vw] max-w-[1200px]">
       <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">RFID Sticker Live Scanner</h2>
 
       <div class="flex flex-col items-center mb-4">
