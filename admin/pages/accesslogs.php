@@ -131,7 +131,7 @@ let filteredLogs = [];
 let currentPage = 1;
 let rowsPerPage = 10; // default
 
-// ✅ Fetch and update logs
+// Fetch and update logs
 function loadLogs() {
     $.ajax({
         url: "./fetch_access_log.php", // adjust path
@@ -150,7 +150,7 @@ function loadLogs() {
     });
 }
 
-// ✅ Apply Date Filter
+// Apply Date Filter
 function applyDateFilter() {
     let startDate = document.getElementById("startDate").value;
     let endDate = document.getElementById("endDate").value;
@@ -186,7 +186,7 @@ function applyDateFilter() {
     renderTable();
 }
 
-// ✅ Render Table with Pagination
+// Render Table with Pagination
 function renderTable() {
     let start = (currentPage - 1) * rowsPerPage;
     let end = rowsPerPage === "all" ? filteredLogs.length : start + rowsPerPage;
