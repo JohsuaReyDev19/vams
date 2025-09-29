@@ -48,7 +48,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     </div>
                     <div class="hidden md:flex space-x-6 items-center relative">
 
-                        <a href="./scan_rfid.php" class="block hover:underline cursor-pointer">Scan Vehicle</a>
+                        <a href="#" class="block hover:underline cursor-pointer">Scan Vehicle</a>
                         <a href="./visitor_entry.php" class="block hover:underline cursor-pointer">Visitor's Entry</a>
 
                         <!-- Dropdown Button -->
