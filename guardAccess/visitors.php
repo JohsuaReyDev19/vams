@@ -295,7 +295,7 @@
         <!-- Mode Toggle Buttons -->
         <div style="display: flex; margin-bottom: 1rem; border-radius: 8px; background: hsl(210, 60%, 96%); padding: 4px; border: 1px solid hsl(210, 40%, 85%);">
           <button id="rfidModeBtn" class="mode-btn active" style="flex: 1;">
-            🏷️ Search
+            🏷️ Search Plate
           </button>
           <button id="visitorModeBtn" class="mode-btn" style="flex: 1;">
             👤 Visitor Entry

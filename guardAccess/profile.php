@@ -49,6 +49,8 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
           <input type="password" name="confirm_password" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-indigo-200" required>
+          <div class="text-red-500 text-sm" id="errorMsg"></div>
+          <div class="text-green-500 text-sm mx-2" id="successMsg"></div>
         </div>
         <button type="submit" class="w-full bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">Save Changes</button>
       </form>
@@ -71,8 +73,13 @@
       dataType: 'json',
       success: function (response) {
         if (response.status === 'success') {
-          toastr.success(response.message);
-
+          // toastr.success(response.message);
+          $('#successMsg').text(response.message);
+          if(response.message){
+            setTimeout(() => {
+                $('#successMsg').text('');
+            }, 4000);
+          }
           // Clear all password fields manually
           $('input[type="password"]').val('');
           $('#new_pass').val('');
@@ -80,7 +87,13 @@
           // $('input[type="hidden"]').val('');
 
         } else {
-          toastr.error(response.message);
+          // toastr.error(response.message);
+          $('#errorMsg').text(response.message);
+          if(response.message){
+            setTimeout(() => {
+                $('#errorMsg').text('');
+            }, 2000);
+          }
         }
       },
       error: function () {
