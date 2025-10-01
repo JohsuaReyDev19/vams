@@ -312,6 +312,7 @@
             placeholder="Enter Plate No. (e.g., SBV-0827)"
             maxlength="20"
           >
+          <div class="text-red-500 text-sm mb-2" id="errorMsg"></div>
           <button onclick="searchVisitor()" id="scanBtn" class="btn btn-primary">
             <span id="scanBtnText">Search Plate</span>
           </button>
@@ -611,13 +612,19 @@ function showLogDetails(log) {
     const plate = document.getElementById('plateInput').value;
 
     if (!plate.trim()) {
-        Toastify({
-            text: "Please enter a plate number.",
-            backgroundColor: "#f44336",
-            close: true,
-            gravity: "top",
-            position: "right",
-        }).showToast();
+        // Toastify({
+        //     text: "Please enter a plate number.",
+        //     backgroundColor: "#f44336",
+        //     close: true,
+        //     gravity: "top",
+        //     position: "right",
+        // }).showToast();
+                $('#errorMsg').text("Please enter a plate number.");
+                if(true){
+                  setTimeout(() => {
+                      $('#errorMsg').text("");
+                  }, 3000);
+                }
         return;
     }
 
@@ -660,13 +667,19 @@ function showLogDetails(log) {
                     document.getElementById('submitExit').style.display = 'inline-block';
                 }
             } else {
-                Toastify({
-                    text: "No record found for this plate number.",
-                    backgroundColor: "#f44336",
-                    close: true,
-                    gravity: "top",
-                    position: "right",
-                }).showToast();
+                // Toastify({
+                //     text: "No record found for this plate number.",
+                //     backgroundColor: "#f44336",
+                //     close: true,
+                //     gravity: "top",
+                //     position: "right",
+                // }).showToast();
+                $('#errorMsg').text("No record found for this plate number.");
+                if(true){
+                  setTimeout(() => {
+                      $('#errorMsg').text("");
+                  }, 3000);
+                }
             }
             closeModal();
         })

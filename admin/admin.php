@@ -163,7 +163,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             <div class="bg-gray-100 p-6 rounded-xl border">
                <div class="flex items-start justify-between">
                      <div>
-                        <p class="text-m text-gray-500">Today's Entries</p>
+                        <p class="text-m text-gray-500">Today's Entry</p>
                         <h3 class="text-4xl font-semibold mt-2" id="total_entered"></h3>
                      </div>
                      <div class="w-10 h-10 rounded-full bg-green-200 flex items-center justify-center">
@@ -176,7 +176,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             <div class="bg-gray-100 p-6 rounded-xl border">
                <div class="flex items-start justify-between">
                      <div>
-                        <p class="text-m text-gray-500">Today's Exits</p>
+                        <p class="text-m text-gray-500">Today's Exit</p>
                         <h3 class="text-4xl font-semibold mt-2" id="total_exit"></h3>
                      </div>
                      <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
