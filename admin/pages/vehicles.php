@@ -391,6 +391,7 @@ function showEditModal(vehicleId, ownerType, vehicleRefId) {
                 document.getElementById('editExtraInfo').value = vehicle.extra_info || '';
                 document.getElementById('editVehicle_ID').value = vehicle.vehicle_id;
                 
+                
                 // Show the modal
                 document.getElementById('editModal').classList.remove('hidden');
                 document.getElementById('editVehicleId').value = vehicle.id;
@@ -418,6 +419,8 @@ function saveVehicleDetails() {
     const ownerName = document.getElementById('editOwnerName').value;
     const extraInfo = document.getElementById('editExtraInfo').value;
     const vehicleID = document.getElementById('editVehicle_ID').value;
+
+    console.log(rfidTag+ " " + ownerName);
 
     const updatedVehicle = {
         id: vehicleId,
@@ -456,7 +459,6 @@ function saveVehicleDetails() {
             })
             .then(data => {
                 if (data.message === 'Vehicle and owner info updated successfully') {
-                    alert(data.message)
                     Swal.fire('Updated!',data.message, 'success');
                     fetchVehicleOwners();
                     closeEditModal();
