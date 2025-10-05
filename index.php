@@ -63,6 +63,10 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
           <button type="submit" class="w-full py-2 text-white font-semibold rounded-md bg-yellow-700 hover:bg-yellow-800 transition duration-200">
             ACCESS DASHBOARD
           </button>
+          
+          <div class="text-center">
+          <a href="#" class="text-blue-500">Change Password</a>
+          </div>
         </form>
       </div>
     </div>
