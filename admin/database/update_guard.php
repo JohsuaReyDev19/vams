@@ -11,30 +11,43 @@ if ($conn->connect_error) {
     exit;
 }
 
-if (!empty($_POST['id']) && !empty($_POST['fullname']) && !empty($_POST['contact']) && !empty($_POST['address']) && !empty($_POST['username'])) {
+if (!empty($_POST['id']) && !empty($_POST['fullname']) && !empty($_POST['contact']) && !empty($_POST['address']) && !empty($_POST['username']) && !empty($_POST['email'])) {
     $id       = intval($_POST['id']);
     $fullname = trim($_POST['fullname']);
     $contact  = trim($_POST['contact']);
     $address  = trim($_POST['address']);
     $username = trim($_POST['username']);
+    $email    = trim($_POST['email']);
 
     // ✅ Check if username already exists in other accounts
-    $check = $conn->prepare("SELECT id FROM admin_accounts WHERE username = ? AND id != ?");
-    $check->bind_param("si", $username, $id);
-    $check->execute();
-    $check->store_result();
-
-    if ($check->num_rows > 0) {
+    $checkUsername = $conn->prepare("SELECT id FROM admin_accounts WHERE username = ? AND id != ?");
+    $checkUsername->bind_param("si", $username, $id);
+    $checkUsername->execute();
+    $checkUsername->store_result();
+    if ($checkUsername->num_rows > 0) {
         echo json_encode(["status" => "error", "message" => "Username is already taken by another account"]);
-        $check->close();
+        $checkUsername->close();
         $conn->close();
         exit;
     }
-    $check->close();
+    $checkUsername->close();
+
+    // ✅ Check if email already exists in other accounts
+    $checkEmail = $conn->prepare("SELECT id FROM admin_accounts WHERE email = ? AND id != ?");
+    $checkEmail->bind_param("si", $email, $id);
+    $checkEmail->execute();
+    $checkEmail->store_result();
+    if ($checkEmail->num_rows > 0) {
+        echo json_encode(["status" => "error", "message" => "Email is already taken by another account"]);
+        $checkEmail->close();
+        $conn->close();
+        exit;
+    }
+    $checkEmail->close();
 
     // ✅ Proceed with update
-    $stmt = $conn->prepare("UPDATE admin_accounts SET full_name=?, contact_number=?, address=?, username=? WHERE id=?");
-    $stmt->bind_param("ssssi", $fullname, $contact, $address, $username, $id);
+    $stmt = $conn->prepare("UPDATE admin_accounts SET full_name=?, contact_number=?, address=?, username=?, email=? WHERE id=?");
+    $stmt->bind_param("sssssi", $fullname, $contact, $address, $username, $email, $id);
 
     if ($stmt->execute()) {
         echo json_encode(["status" => "success"]);

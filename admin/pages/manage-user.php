@@ -93,6 +93,7 @@ $name = htmlspecialchars(urldecode($name));
                                         <th class="px-2 py-1.5">Name</th>
                                         <th class="px-2 py-1.5">Contact No.</th>
                                         <th class="px-2 py-1.5">Address</th>
+                                        <th class="px-2 py-1.5">email</th>
                                         <th class="px-2 py-1.5">Username</th>
                                         <th class="px-2 py-1.5">Created at</th>
                                         <th class="px-2 py-1.5 text-center">Actions</th>
@@ -129,6 +130,10 @@ $name = htmlspecialchars(urldecode($name));
 
                                 <label for="username" class="block text-sm font-medium text-gray-700 mt-4">Username</label>
                                 <input type="text" id="username" class="mt-1 p-2 w-full border rounded-md" required>
+
+                                <label for="mail" class="block text-sm font-medium text-gray-700 mt-4">Email</label>
+                                <input type="email" id="mail" class="mt-1 p-2 w-full border rounded-md" required>
+
                                 <div class="flex justify-center" id="error">
                                     <p class="text-red-600 text-sm" id="message"></p>
                                 </div>
@@ -182,7 +187,8 @@ $name = htmlspecialchars(urldecode($name));
 
             <label for="username" class="block text-sm font-medium text-gray-700 mt-4">Username</label>
             <input type="text" id="username" name="username" class="mt-1 p-2 w-full border rounded-md" placeholder="Enter username" required>
-
+            <label for="email" class="block text-sm font-medium text-gray-700 mt-4">Email</label>
+            <input type="email" id="email" name="email" class="mt-1 p-2 w-full border rounded-md" placeholder="Enter Email" required>
             <div class="flex justify-center" id="errorMessage">
                 <p class="text-red-600 text-sm" id="messageError"></p>
             </div>
@@ -305,6 +311,7 @@ $(document).on('click', '.showProfile', function() {
             if (response.status === 'success') {
                 $("#editVehicleId").val(response.data.id);
                 $("#fullname").val(response.data.full_name);
+                $("#mail").val(response.data.email);
                 $("#contact").val(response.data.contact_number);
                 $("#address").val(response.data.address);
                 $("#username").val(response.data.username);
@@ -341,7 +348,8 @@ $(document).on('submit', '#updateProfileForm', function(e) {
             fullname: $("#fullname").val(),
             contact: $("#contact").val(),
             address: $("#address").val(),
-            username: $("#username").val()
+            username: $("#username").val(),
+            email: $("#mail").val()   // ✅ FIXED
         },
         dataType: "json",
         success: function(response) {
@@ -358,7 +366,7 @@ $(document).on('submit', '#updateProfileForm', function(e) {
                 $('#message').text(response.message);
                 const errormessage = document.getElementById('message').innerText;
 
-                if(errormessage !== ''){
+                if (errormessage !== '') {
                     setTimeout(() => {
                         $('#message').text('');
                     }, 3000);
@@ -370,6 +378,7 @@ $(document).on('submit', '#updateProfileForm', function(e) {
         }
     });
 });
+
 
 function showToast(message, type = "success") {
     let toast = $("#toast");
@@ -501,6 +510,7 @@ function showToast(message, type = "success") {
                                 <td class="px-2 py-1.5 truncate max-w-[80px]">${row.full_name}</td>
                                 <td class="px-2 py-1.5">${row.contact_number}</td>
                                 <td class="px-2 py-1.5">${row.address}</td>
+                                <td class="px-2 py-1.5">${row.email}</td>
                                 <td class="px-2 py-1.5">${row.username}</td>
                                 <td class="px-2 py-1.5 text-blue-500">${formattedDate}</td>
                                 <td class="px-2 py-1.5">

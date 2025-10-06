@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 
 if (isset($_POST['id'])) {
     $id = intval($_POST['id']);
-    $stmt = $conn->prepare("SELECT id, full_name, contact_number, address, username FROM admin_accounts WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id, full_name, contact_number, address, email, username FROM admin_accounts WHERE id = ?");
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {

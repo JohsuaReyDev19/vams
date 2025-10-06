@@ -14,6 +14,7 @@ if ($conn->connect_error) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
+    $email = $_POST['email'];
     $password_hash = password_hash("default123", PASSWORD_DEFAULT); // default password
     $full_name = $_POST['fullname'];
     $contact_number = $_POST['contact'];
@@ -35,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $checkStmt->close();
 
     // ✅ 2. Insert if username is unique
-    $stmt = $conn->prepare("INSERT INTO admin_accounts (username, password_hash, full_name, contact_number, address, Rule) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $username, $password_hash, $full_name, $contact_number, $address, $rule);
+    $stmt = $conn->prepare("INSERT INTO admin_accounts (username, password_hash, full_name, contact_number, address, email, Rule) VALUES (?, ?, ?, ?, ?,?, ?)");
+    $stmt->bind_param("sssssss", $username, $password_hash, $full_name, $contact_number, $address, $email, $rule);
 
     if ($stmt->execute()) {
         echo json_encode(['status' => 'success', 'message' => 'Account created successfully.']);
