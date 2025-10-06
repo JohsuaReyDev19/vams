@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $result = $stmt->get_result();
 
     if ($result->num_rows == 0) {
-        echo json_encode(["success" => false, "message" => "Email not found"]);
+        echo json_encode(["success" => false, "message" => "Email not Registered!"]);
         exit;
     }
 

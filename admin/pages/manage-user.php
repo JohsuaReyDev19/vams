@@ -73,7 +73,7 @@ $name = htmlspecialchars(urldecode($name));
                     </div>
                     <div class="bg-gray-100 p-4 rounded-xl flex flex-wrap gap-4 justify-between items-center mt-6">
                     <!-- Filters Section -->
-                    <div class="w-full flex flex-col md:flex-row md:items-end md:gap-4 space-y-2 md:space-y-0">
+                    <div class="w-full flex flex-col md:flex-row md:items-end md:justify-end md:gap-4 space-y-2 md:space-y-0">
                         <button id="addVehicleBtn"
                             class="w-full md:w-auto px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-lg shadow-sm text-sm transition duration-150 ease-in-out">
                             + Add

@@ -55,18 +55,28 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                         <h1 class="font-bold text-3xl mb-2">Vehicle Management</h1>
                         <p class="text-gray-500">Registered vehicles, edit and manage vehicles with RFID access</p>
                     </div>
-                    <div class="bg-gray-100 p-6 rounded-xl flex flex-wrap gap-4 justify-between items-center my-6">
+                    <div class="bg-gray-100 p-6 rounded-xl flex flex-wrap gap-4 justify-between items-center my-3">
                     <!-- Filters Section -->
                     <div class="w-full flex flex-col md:flex-row md:items-center md:justify-between md:gap-4 space-y-2 md:space-y-0">
-                        <!-- Search -->
-                        <input type="text" id="search" placeholder="Search owners..." 
-                            class="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent shadow-sm text-sm"
-                        >
+    
+                        <!-- Search with icon -->   
+                        <div class="relative w-full md:w-64">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <!-- Search Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                    class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                        d="M21 21l-4.35-4.35M16.65 16.65A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
+                                </svg>
+                            </span>
+                            <input type="text" id="search" placeholder="Search owners..." 
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none 
+                                    focus:ring-2 focus:ring-blue-400 focus:border-transparent shadow-sm text-sm"
+                            >
+                        </div>
 
                         <!-- Right-side controls -->
-                        <?php
-                            include '../semesterdate/date_input.php';
-                        ?>
+                        <?php include '../semesterdate/date_input.php'; ?>
                     </div>
                 
                     <!-- vehicle list -->
@@ -74,11 +84,21 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     <div id="vehicleList" class="bg-white p-4 rounded-lg"></div>
 
                 </div>
-                <!-- image modal -->
-                <div id="imageModal" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex justify-center items-center z-50">
-                    <div class="relative">
-                        <button onclick="closeModal()" class="bg-gray-700 rounded-full absolute top-0 right-0 p-2 text-white text-xl">×</button>
-                        <img id="modalImage" class="max-w-full max-h-screen object-contain" alt="Modal Image" />
+                <!-- Image Modal -->
+                <div id="imageModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+                    <div class="relative max-w-4xl w-full mx-4 rounded-2xl overflow-hidden shadow-2xl bg-white">
+                        
+                        <!-- Close button -->
+                        <button onclick="closeModal()" 
+                            class="absolute top-3 right-3 bg-black/60 hover:bg-black/80 text-white rounded-full p-2 transition">
+                            ✕
+                        </button>
+
+                        <!-- Image -->
+                        <img id="modalImage" 
+                            class="w-full h-auto max-h-[85vh] object-contain bg-black" 
+                            alt="Preview Image" />
+                        
                     </div>
                 </div>
 
@@ -411,16 +431,14 @@ function closeEditModal() {
 }
 
 function saveVehicleDetails() {
-    const vehicleId = document.getElementById('editVehicleId').value;
+    const vehicleId   = document.getElementById('editVehicleId').value;
     const plateNumber = document.getElementById('editPlateNumber').value;
     const vehicleType = document.getElementById('editVehicleType').value;
-    const rfidTag = document.getElementById('editRfidTag').value;
-    const ownerType = document.getElementById('editOwnerType').value;
-    const ownerName = document.getElementById('editOwnerName').value;
-    const extraInfo = document.getElementById('editExtraInfo').value;
-    const vehicleID = document.getElementById('editVehicle_ID').value;
-
-    console.log(rfidTag+ " " + ownerName);
+    const rfidTag     = document.getElementById('editRfidTag').value;
+    const ownerType   = document.getElementById('editOwnerType').value;
+    const ownerName   = document.getElementById('editOwnerName').value;
+    const extraInfo   = document.getElementById('editExtraInfo').value;
+    const vehicleID   = document.getElementById('editVehicle_ID').value;
 
     const updatedVehicle = {
         id: vehicleId,
@@ -433,7 +451,6 @@ function saveVehicleDetails() {
         vehicle_ID: vehicleID
     };
 
-    // Show SweetAlert confirmation before proceeding
     Swal.fire({
         title: 'Are you sure?',
         text: 'Do you want to update this vehicle\'s details?',
@@ -443,12 +460,9 @@ function saveVehicleDetails() {
         cancelButtonText: 'No, cancel!',
     }).then((result) => {
         if (result.isConfirmed) {
-            // Proceed with updating the vehicle details
             fetch('../backend/update_vehicle.php', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedVehicle)
             })
             .then(response => {
@@ -458,24 +472,31 @@ function saveVehicleDetails() {
                 return response.json();
             })
             .then(data => {
-                if (data.message === 'Vehicle and owner info updated successfully') {
-                    Swal.fire('Updated!',data.message, 'success');
-                    fetchVehicleOwners();
-                    closeEditModal();
-
-                } else if(data.message === 'RFID Sticker already exists for another vehicle'){
-                    Swal.fire('Alert', data.message, 'warning');
+                if (data.success) {
+                    Swal.fire('Updated!', data.message, 'success');
+                    fetchVehicleOwners();   // refresh table
+                    closeEditModal();       // close modal
+                } else {
+                    // Show different alerts for specific validation issues
+                    if (data.message.includes('RFID')) {
+                        Swal.fire('Duplicate RFID', data.message, 'warning');
+                    } else if (data.message.includes('Plate')) {
+                        Swal.fire('Duplicate Plate', data.message, 'warning');
+                    } else {
+                        Swal.fire('Error', data.message, 'error');
+                    }
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                Swal.fire('Error', 'An error occurred while saving the vehicle details: ' + error.message, 'error');
+                Swal.fire('Error', 'An error occurred: ' + error.message, 'error');
             });
         } else {
             Swal.fire('Cancelled', 'The update was cancelled.', 'info');
         }
     });
 }
+
 function deleteVehicle(vehicleId, vehicle_id) {
     Swal.fire({
         title: 'Are you sure?',

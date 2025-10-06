@@ -142,59 +142,84 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
   </aside>
   <div class="p-6 sm:ml-64">
       <div class="w-full mt-12 mb-4">
-          <h1 class="font-bold text-3xl">Dashboard</h1>
+          <h1 class="font-bold text-3xl">My Dashboard</h1>
       </div>
       <div id="showdashboard" class="space-y-6 animate-slide-in">
-         <div class="grid grid-cols-1  lg:grid-cols-3 gap-6">
-            <div class="bg-gray-100 p-8 rounded-xl border">
-               <div class="flex items-start justify-between">
-                     <div>
-                        <p class="text-m text-gray-500">Registered Vehicles</p>
-                        <h3 class="text-4xl font-semibold mt-2" id="approved"></h3>
-                     </div>
-                     <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                        <i class="fas fa-car text-blue-600">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-car-front"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"/><path d="M7 14h.01"/><path d="M17 14h.01"/><rect width="18" height="8" x="3" y="10" rx="2"/><path d="M5 18v2"/><path d="M19 18v2"/></svg>
-                        </i>
-                     </div>
-               </div>
-            </div>
-            
-            <div class="bg-gray-100 p-6 rounded-xl border">
-               <div class="flex items-start justify-between">
-                     <div>
-                        <p class="text-m text-gray-500">Today's Entry</p>
-                        <h3 class="text-4xl font-semibold mt-2" id="total_entered"></h3>
-                     </div>
-                     <div class="w-10 h-10 rounded-full bg-green-200 flex items-center justify-center">
-                        <i class="fas fa-arrow-right text-green-600">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-from-line"><path d="m9 6-6 6 6 6"/><path d="M3 12h14"/><path d="M21 19V5"/></svg>
-                        </i>
-                     </div>
-               </div>
-            </div>
-            <div class="bg-gray-100 p-6 rounded-xl border">
-               <div class="flex items-start justify-between">
-                     <div>
-                        <p class="text-m text-gray-500">Today's Exit</p>
-                        <h3 class="text-4xl font-semibold mt-2" id="total_exit"></h3>
-                     </div>
-                     <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
-                        <i class="fas fa-arrow-left text-red-600">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-from-line"><path d="M3 5v14"/><path d="M21 12H7"/><path d="m15 18 6-6-6-6"/></svg>
-                        </i>
-                     </div>
-               </div>
-            </div>
-         </div>
+         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <!-- Registered Vehicles -->
+  <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Registered Vehicles</p>
+        <h3 class="text-4xl font-bold text-gray-800 mt-2" id="approved">0</h3>
+      </div>
+      <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"/>
+          <path d="M7 14h.01"/>
+          <path d="M17 14h.01"/>
+          <rect width="18" height="8" x="3" y="10" rx="2"/>
+          <path d="M5 18v2"/>
+          <path d="M19 18v2"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Today's Entry -->
+  <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Today's Entry</p>
+        <h3 class="text-4xl font-bold text-gray-800 mt-2" id="total_entered">0</h3>
+      </div>
+      <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="m9 6-6 6 6 6"/>
+          <path d="M3 12h14"/>
+          <path d="M21 19V5"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Today's Exit -->
+  <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Today's Exit</p>
+        <h3 class="text-4xl font-bold text-gray-800 mt-2" id="total_exit">0</h3>
+      </div>
+      <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M3 5v14"/>
+          <path d="M21 12H7"/>
+          <path d="m15 18 6-6-6-6"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
 
          <!-- Recent Activity -->
-         <div class="bg-gray-100 p-6 rounded border-black">
-            <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
-            <div id="recent-activity" class="space-y-4 max-h-[300px] overflow-y-auto pr-2">
-               <!-- Activity will be dynamically inserted here -->
-            </div>
-         </div>
+<div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+  <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" 
+         fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+            d="M5 13l4 4L19 7" />
+    </svg>
+    Recent Activity
+  </h3>
+
+  <div id="recent-activity" class="space-y-3 max-h-[300px] overflow-y-auto pr-2">
+    <!-- Activity Item -->
+    <div class="flex items-start justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+      
+  </div>
+</div>
+
    </div>
   </div>
 <script>
@@ -378,23 +403,25 @@ $(document).ready(function() {
                     : `Vehicle ${escapeHtml(log.plate_number)} entered campus`;
 
                 container.append(`
-                    <div class="flex items-center justify-between py-2 border-b last:border-0">
+                    <div class="flex items-start justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
                         <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" 
-                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" 
-                                     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" 
-                                     class="lucide lucide-car">
-                                     <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
-                                     <circle cx="7" cy="17" r="2"/>
-                                     <path d="M9 17h6"/>
-                                     <circle cx="17" cy="17" r="2"/>
-                                </svg>
+                            <!-- Icon Circle -->
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" 
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
+                                <circle cx="7" cy="17" r="2"/>
+                                <path d="M9 17h6"/>
+                                <circle cx="17" cy="17" r="2"/>
+                            </svg>
                             </div>
+                            <!-- Text -->
                             <div>
-                                <p class="font-medium">${actionText}</p>
-                                <p class="text-sm text-gray-500">${formatTimeAgo(log.timestamp)}</p>
+                            <p class="font-medium text-gray-800">${actionText}</p>
+                            <p class="text-xs text-gray-500">${formatTimeAgo(log.timestamp)}</p>
                             </div>
+                        </div>
                         </div>
                     </div>
                 `);

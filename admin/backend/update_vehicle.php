@@ -32,38 +32,52 @@ $vehicle_type = $data['vehicle_type'];
 $rfid_tag     = $data['rfid_tag'];
 $owner_type   = $data['owner_type'];
 $owner_name   = $data['owner_name'];
-$extra_info   = $data['extra_info'] ?? null; // use for contact/course/department/company
+$extra_info   = $data['extra_info'] ?? null; // course/department/company/contact
 $vehicle_id   = intval($data['vehicle_ID']);
 
-// ✅ Step 1: Check for duplicate RFID (other than this record)
-$checkRfid = $conn->prepare("SELECT id FROM registered_vehicles WHERE rfid_tag = ? AND id != ?");
-$checkRfid->bind_param("si", $rfid_tag, $id);
+/**
+ * ✅ Step 1: RFID Validation (check both registered_vehicles & vehicles)
+ */
+$checkRfid = $conn->prepare("
+    SELECT 'registered' as source FROM registered_vehicles WHERE rfid_tag = ? AND id != ?
+    UNION
+    SELECT 'vehicles' as source FROM vehicles WHERE rfid_tag = ? AND id != ?
+");
+$checkRfid->bind_param("sisi", $rfid_tag, $id, $rfid_tag, $vehicle_id);
 $checkRfid->execute();
 $checkRfid->store_result();
 
 if ($checkRfid->num_rows > 0) {
-    echo json_encode(['success' => false, 'message' => 'RFID Sticker already exists for another vehicle']);
+    echo json_encode(['success' => false, 'message' => 'RFID Sticker already exists in system']);
     $checkRfid->close();
     $conn->close();
     exit;
 }
 $checkRfid->close();
 
-// ✅ Step 2: Check for duplicate plate number (other than this record)
-$checkPlate = $conn->prepare("SELECT id FROM registered_vehicles WHERE plate_number = ? AND id != ?");
-$checkPlate->bind_param("si", $plate_number, $id);
+/**
+ * ✅ Step 2: Plate/License Number Validation (check both tables)
+ */
+$checkPlate = $conn->prepare("
+    SELECT 'registered' as source FROM registered_vehicles WHERE plate_number = ? AND id != ?
+    UNION
+    SELECT 'vehicles' as source FROM vehicles WHERE license_plate = ? AND id != ?
+");
+$checkPlate->bind_param("sisi", $plate_number, $id, $plate_number, $vehicle_id);
 $checkPlate->execute();
 $checkPlate->store_result();
 
 if ($checkPlate->num_rows > 0) {
-    echo json_encode(['success' => false, 'message' => 'Plate number already exists for another vehicle']);
+    echo json_encode(['success' => false, 'message' => 'Plate number already exists in system']);
     $checkPlate->close();
     $conn->close();
     exit;
 }
 $checkPlate->close();
 
-// ✅ Step 3: Update registered_vehicles table
+/**
+ * ✅ Step 3: Update registered_vehicles
+ */
 $update = $conn->prepare("
     UPDATE registered_vehicles
     SET plate_number = ?, vehicle_type = ?, rfid_tag = ?, name = ?, status = ?, contact = ?
@@ -79,7 +93,9 @@ if (!$update->execute()) {
 }
 $update->close();
 
-// ✅ Step 4: Update owner-specific table
+/**
+ * ✅ Step 4: Update owner-specific table
+ */
 switch (strtolower($owner_type)) {
     case 'student':
         $stmt = $conn->prepare("UPDATE student_vehicles SET student_name = ?, course = ? WHERE vehicle_id = ?");
