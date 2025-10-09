@@ -48,7 +48,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
                     </div>
                     <div class="hidden md:flex space-x-6 items-center relative">
 
-                        <a href="#" class="block hover:underline cursor-pointer">Scan Vehicle</a>
+                        <a href="./index.php" class="block hover:underline cursor-pointer">Scan Vehicle</a>
                         <a href="./visitor_entry.php" class="block hover:underline cursor-pointer">Visitor's Entry</a>
 
                         <!-- Dropdown Button -->
@@ -78,7 +78,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
                             <!-- Dropdown Menu -->
                             <div class="absolute right-0 w-40 bg-white border border-gray-200 rounded shadow-md hidden group-hover:block z-50">
-                                <a class="btnProfile block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                                <a href="./index.php" class="btnProfile block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
                                 <a href="../admin/database/logout.php" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="m16 17 5-5-5-5"/>

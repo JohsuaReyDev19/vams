@@ -69,7 +69,7 @@ $name = htmlspecialchars(urldecode($name));
     <div class="w-full mx-auto" id="vehicleshow">
                     <div class="w-full mt-12">
                         <h1 class="font-bold text-3xl mb-2">Security Personel Account's</h1>
-                        <p class="text-gray-500">Manage User</p>
+                        <p class="text-gray-500">Manage your Security Personel Account's</p>
                     </div>
                     <div class="bg-gray-100 p-4 rounded-xl flex flex-wrap gap-4 justify-between items-center mt-6">
                     <!-- Filters Section -->

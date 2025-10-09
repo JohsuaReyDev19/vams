@@ -14,7 +14,18 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style>
+    .logo {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;   /* bold, matches thickness */
+      font-size: 48px;    /* adjust as needed */
+      color: #003366;     /* change to match your logo’s blue */
+      letter-spacing: -1px; /* tighter spacing if needed */
+    }
+  </style>
 </head>
 <body class="min-h-screen w-screen m-0 p-0 relative overflow-y-auto bg-white">
 
@@ -30,8 +41,8 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
       <div class="w-40 h-auto mb-6">
         <img src="prmsu.png" alt="Security Illustration" class="w-full h-auto">
       </div>
-      <h1 class="text-3xl md:text-4xl font-bold text-yellow-800 mb-2 text-center">P R M S U</h1>
-      <p class="text-2xl text-gray-700 mb-4 text-center">RFID Sticker Vehicle Access Monitoring System</p>
+      <h1 class="text-3xl md:text-4xl font-bold text-yellow-800 mb-2 text-center logo">P R M S U</h1>
+      <p class="text-2xl text-gray-700 mb-4 text-center logo">RFID Sticker Vehicle Access Monitoring System</p>
       <ul class="text-left space-y-3 text-gray-800 font-medium text-base md:text-lg">
         <li>Real-time Vehicle Tracking</li>
       </ul> 
@@ -39,19 +50,19 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 
     <!-- RIGHT SIDE: Login Form -->
     <div class="w-full md:w-1/2 flex items-center justify-center bg-white px-6 py-10">
-      <div class="w-full max-w-md px-6 md:px-10 py-8 md:py-12 shadow-lg rounded-xl">
-        <h2 id="title1" class="text-2xl md:text-3xl font-bold text-yellow-800 mb-2 text-center">Secure Login</h2>
-        <p id="title2" class="text-sm text-gray-500 mb-6 text-center">Access your monitoring dashboard</p>
-        <form id="loginForm" class="space-y-6">
+      <div class="w-full max-w-md px-6 py-8 md:py-12 rounded-xl">
+        <h2 id="title1" class="text-2xl md:text-3xl font-bold text-yellow-800 mb-2 text-center">Welcome back!</h2>
+        <p id="title2" class="text-sm text-gray-500 mb-6 text-center">Log in to continue to your account</p>
+        <form id="loginForm" class="space-y-8">
           <div>
-            <label class="block text-sm font-medium text-gray-700">Username</label>
-            <input id="username" type="text" placeholder="Enter your username" class="mt-1 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-yellow-700 focus:border-yellow-700" autofocus/>
+            <label class="block text-sm font-medium text-gray-500">Username</label>
+            <input id="username" type="text" placeholder="Enter your username" class="outline-none mt-1 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-yellow-700 focus:border-yellow-700" autofocus/>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Password</label>
+            <label class="block text-sm font-medium text-gray-500">Password</label>
             <div class="relative">
                 <input id="password" type="password" placeholder="Enter your password"
-                    class="mt-1 w-full border border-gray-300 rounded-md px-4 py-2 pr-10 focus:ring-yellow-700 focus:border-yellow-700" />
+                    class="outline-none mt-1 w-full border border-gray-300 rounded-md px-4 py-2 pr-10 focus:ring-yellow-700 focus:border-yellow-700" />
 
                 <!-- Toggle Button -->
                 <button type="button" id="togglePassword" 
@@ -61,30 +72,30 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
             </div>
           </div>
           <button type="submit" class="w-full py-2 text-white font-semibold rounded-md bg-yellow-700 hover:bg-yellow-800 transition duration-200">
-            ACCESS DASHBOARD
+            Log in
           </button>
           
-          <div id="attemp" class="text-center text-sm hidden">
-            <a href="#" class="text-blue-500">Forgot Password</a>
+          <div id="attemp" class="text-center text-sm">
+            <span id="forgotPass" class="text-yellow-800 underline cursor-pointer">Forgot password?</span>
           </div>
         </form>
 
+        
         <div id="showFormForgot" class="bg-white rounded-xl p-8 w-full hidden">
           <h2 class="text-2xl font-bold text-yellow-800 mb-2 text-center">Forgot Password</h2>
           <p class="text-gray-600 text-sm mb-6 text-center">Enter your registered email to receive a reset code</p>
 
-          <form id="forgotForm" class="space-y-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+          <form id="forgotForm">
+            <div class="space-y-6">
+              <label class="block text-sm font-medium text-gray-500 mb-1">Email Address</label>
               <input type="email" name="email" placeholder="Enter your email"
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-600"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 outline-none ring-yellow-600"
                 required>
-            </div>
-
-            <button type="submit"
+                <button type="submit"
               class="w-full py-2 bg-yellow-700 text-white font-semibold rounded-lg shadow hover:bg-yellow-800 transition">
-              Send Reset Code
+              Send Code
             </button>
+            </div>
           </form>
 
           <p id="remember" class="mt-6 text-center text-sm text-gray-500 hidden">
@@ -94,7 +105,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         </div>
 
         <div id="resetPasswordForm" class="bg-white rounded-xl p-8 w-full hidden">
-            <h2 class="text-2xl font-bold text-yellow-800 mb-2 text-center">Reset Password</h2>
+            <h2 class="text-2xl font-bold text-yellow-800 mb-2 text-center">Update Password</h2>
             <p class="text-gray-600 text-sm mb-6 text-center">Enter the code sent to your email and your new password</p>
 
             <form id="resetForm" class="space-y-6">
@@ -137,6 +148,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
   <script>
     const passwordInput = document.getElementById('password');
     const toggleButton = document.getElementById('togglePassword');
+    const forgotPass = document.getElementById('forgotPass');
     let attemp = 0;
 
     function swowAttemp(){
@@ -171,6 +183,14 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
         passwordInput.setAttribute('type', type);
 
         this.textContent = type === 'password' ? 'Show' : 'Hide';
+    });
+
+    forgotPass.addEventListener('click', function () {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('showFormForgot').classList.remove('hidden');
+            document.getElementById('remember').classList.remove('hidden');
+            document.getElementById('title1').innerText = "";
+            document.getElementById('title2').innerText = "";
     });
 
     const loader = document.getElementById('loader');
