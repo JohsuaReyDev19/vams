@@ -56,12 +56,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'burcejosh19@gmail.com';         // Your Gmail
-        $mail->Password   = 'oxcyewwxjrakajuc';       // Gmail App Password (16 chars)
+        $mail->Username   = 'burcejosh19@gmail.com';
+        $mail->Password   = 'mwbt bwct grds fvsr';       
         $mail->SMTPSecure = 'tls';
         $mail->Port       = 587;
 
-        $mail->setFrom('burcejosh19@gmail.com', 'PRMSU VAMS'); // Must match Gmail
+        $mail->setFrom('burcejosh19@gmail.com', 'PRMSU VAMS');
         $mail->addAddress($email, $user['full_name']);
 
         $mail->isHTML(true);
