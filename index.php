@@ -25,6 +25,45 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
       color: #003366;     /* change to match your logo’s blue */
       letter-spacing: -1px; /* tighter spacing if needed */
     }
+
+    /* Typing effect */
+.typing, .typing-delay{
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  animation: typing 3s steps(30, end) forwards, blink 0.8s step-end infinite;
+}
+
+/* Delay for subtitle */
+
+
+/* Keyframes */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink {
+  from, to { border-color: transparent }
+  50% { border-color: #f59e0b; }
+}
+
+/* Fade-in list items */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 1s ease forwards;
+}
+
+.fade-in.delay-2 { animation-delay: 1s; }
+.fade-in.delay-3 { animation-delay: 2s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
   </style>
 </head>
 <body class="min-h-screen w-screen m-0 p-0 relative overflow-y-auto bg-white">
@@ -36,112 +75,132 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 
   <div class="flex flex-col md:flex-row min-h-screen w-full">
 
-    <!-- LEFT SIDE: About -->
-    <div class="w-full md:w-1/2 bg-yellow-100 flex flex-col justify-center items-center px-6 md:px-12 py-10">
-      <div class="w-40 h-auto mb-6">
-        <img src="prmsu.png" alt="Security Illustration" class="w-full h-auto">
-      </div>
-      <h1 class="text-3xl md:text-4xl font-bold text-yellow-800 mb-2 text-center logo">P R M S U</h1>
-      <p class="text-2xl text-gray-700 mb-4 text-center logo">RFID Sticker Vehicle Access Monitoring System</p>
-      <ul class="text-left space-y-3 text-gray-800 font-medium text-base md:text-lg">
-        <li>Real-time Vehicle Tracking</li>
-      </ul> 
+  <!-- LEFT SIDE: About (hidden on mobile) -->
+  <div class="hidden md:flex w-full md:w-1/2 relative flex-col justify-center items-center px-6 md:px-12 py-10 bg-yellow-100">
+
+    <!-- Background Image with opacity -->
+    <div class="absolute inset-0">
+      <img src="./undraw_order-a-car_x5mq.png" alt="Background" 
+           class="w-full h-full object-cover">
     </div>
 
-    <!-- RIGHT SIDE: Login Form -->
-    <div class="w-full md:w-1/2 flex items-center justify-center bg-white px-6 py-10">
-      <div class="w-full max-w-md px-6 py-8 md:py-12 rounded-xl">
-        <h2 id="title1" class="text-2xl md:text-3xl font-bold text-yellow-800 mb-2 text-center">Welcome back!</h2>
-        <p id="title2" class="text-sm text-gray-500 mb-6 text-center">Log in to continue to your account</p>
-        <form id="loginForm" class="space-y-8">
-          <div>
-            <label class="block text-sm font-medium text-gray-500">Username</label>
-            <input id="username" type="text" placeholder="Enter your username" class="outline-none mt-1 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-yellow-700 focus:border-yellow-700" autofocus/>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-500">Password</label>
-            <div class="relative">
-                <input id="password" type="password" placeholder="Enter your password"
-                    class="outline-none mt-1 w-full border border-gray-300 rounded-md px-4 py-2 pr-10 focus:ring-yellow-700 focus:border-yellow-700" />
+    <!-- Content above background -->
+    <div class="relative z-10 flex flex-col text-center items-center mt-[-230px]">
+      <!-- Logo Image -->
+      <div class="w-32 h-auto mb-20">
+        <img src="prmsu.png" alt="Security Illustration" 
+             class="w-full h-auto md:w-[200px]">
+      </div>
 
-                <!-- Toggle Button -->
-                <button type="button" id="togglePassword" 
+      <!-- Title -->
+      <h1 class="text-2xl md:text-5xl font-bold text-yellow-500 mb-2 typing">
+        P R M S U
+      </h1>
+
+      <!-- Subtitle & Features -->
+      <div class="bg-white/100 p-4 rounded-xl flex flex-col items-center text-center">
+        <p class="text-base md:text-2xl text-gray-700 mb-3 logo typing-delay">
+          RFID Sticker Vehicle Access Monitoring System
+        </p>
+        <ul class="space-y-3 text-gray-500 font-medium text-sm md:text-lg">
+          <li>Real-time Vehicle Tracking</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDE: Login Form -->
+  <div class="w-full md:w-1/2 flex items-center justify-center bg-white px-6 py-10">
+    <div class="w-full max-w-md px-6 py-8 md:py-12 rounded-xl fade-in">
+      <h2 id="title1" class="text-2xl md:text-4xl font-bold text-yellow-800 mb-2 text-center">
+        Welcome back!
+      </h2>
+      <p id="title2" class="text-sm text-gray-500 mb-6 text-center">
+        Log in to continue to your account
+      </p>
+
+      <form id="loginForm" class="space-y-8">
+        <div>
+          <label class="block text-sm font-medium text-gray-500">Username</label>
+          <input id="username" type="text" placeholder="Enter your username" 
+                 class="outline-none mt-1 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-yellow-700 focus:border-yellow-700" autofocus/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-500">Password</label>
+          <div class="relative">
+            <input id="password" type="password" placeholder="Enter your password"
+                   class="outline-none mt-1 w-full border border-gray-300 rounded-md px-4 py-2 pr-10 focus:ring-yellow-700 focus:border-yellow-700" />
+            <!-- Toggle Button -->
+            <button type="button" id="togglePassword" 
                     class="absolute mt-2 right-2 top-1/2 transform -translate-y-1/2 text-sm text-gray-500 focus:outline-none">
-                    Show
-                </button>
-            </div>
+              Show
+            </button>
           </div>
-          <button type="submit" class="w-full py-2 text-white font-semibold rounded-md bg-yellow-700 hover:bg-yellow-800 transition duration-200">
-            Log in
-          </button>
-          
-          <div id="attemp" class="text-center text-sm">
-            <span id="forgotPass" class="text-yellow-800 underline cursor-pointer">Forgot password?</span>
-          </div>
-        </form>
+        </div>
+        <button type="submit" 
+                class="w-full py-2 text-white font-semibold rounded-md bg-yellow-700 hover:bg-yellow-800 transition duration-200">
+          Log in
+        </button>
+        <div id="attemp" class="text-center text-sm">
+          <span id="forgotPass" class="text-yellow-800 underline cursor-pointer">Forgot password?</span>
+        </div>
+      </form>
 
-        
-        <div id="showFormForgot" class="bg-white rounded-xl p-8 w-full hidden">
-          <h2 class="text-2xl font-bold text-yellow-800 mb-2 text-center">Forgot Password</h2>
-          <p class="text-gray-600 text-sm mb-6 text-center">Enter your registered email to receive a reset code</p>
-
-          <form id="forgotForm">
-            <div class="space-y-6">
-              <label class="block text-sm font-medium text-gray-500 mb-1">Email Address</label>
-              <input type="email" name="email" placeholder="Enter your email"
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 outline-none ring-yellow-600"
-                required>
-                <button type="submit"
-              class="w-full py-2 bg-yellow-700 text-white font-semibold rounded-lg shadow hover:bg-yellow-800 transition">
+      <!-- Forgot Password Form -->
+      <div id="showFormForgot" class="bg-white rounded-xl p-8 w-full hidden">
+        <h2 class="text-2xl font-bold text-yellow-800 mb-2 text-center">Forgot Password</h2>
+        <p class="text-gray-600 text-sm mb-6 text-center">Enter your registered email to receive a reset code</p>
+        <form id="forgotForm">
+          <div class="space-y-6">
+            <label class="block text-sm font-medium text-gray-500 mb-1">Email Address</label>
+            <input type="email" name="email" placeholder="Enter your email"
+                   class="w-full border border-gray-300 rounded-lg px-4 py-2 outline-none ring-yellow-600" required>
+            <button type="submit"
+                    class="w-full py-2 bg-yellow-700 text-white font-semibold rounded-lg shadow hover:bg-yellow-800 transition">
               Send Code
             </button>
-            </div>
-          </form>
-
-          <p id="remember" class="mt-6 text-center text-sm text-gray-500 hidden">
-            Remember your password?
-            <a href="index.php" class="text-yellow-700 font-medium hover:underline">Back to Login</a>
-          </p>
-        </div>
-
-        <div id="resetPasswordForm" class="bg-white rounded-xl p-8 w-full hidden">
-            <h2 class="text-2xl font-bold text-yellow-800 mb-2 text-center">Update Password</h2>
-            <p class="text-gray-600 text-sm mb-6 text-center">Enter the code sent to your email and your new password</p>
-
-            <form id="resetForm" class="space-y-6">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                <input type="email" name="email" placeholder="Enter your email"
-                  class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" required>
-              </div>
-
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Reset Code</label>
-                <input type="text" name="reset_code" placeholder="Enter the code"
-                  class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" required>
-              </div>
-
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-                <input type="password" name="new_password" placeholder="Enter new password"
-                  class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" required>
-              </div>
-
-              <button type="submit"
-                class="w-full py-2 bg-yellow-700 text-white font-semibold rounded-lg shadow hover:bg-yellow-800 transition">
-                Reset Password
-              </button>
-            </form>
-
-            <p class="mt-6 text-center text-sm text-gray-500">
-              Remember your password?
-              <a href="index.php" class="text-yellow-700 font-medium hover:underline">Back to Login</a>
-            </p>
           </div>
+        </form>
+        <p id="remember" class="mt-6 text-center text-sm text-gray-500 hidden">
+          Remember your password?
+          <a href="index.php" class="text-yellow-700 font-medium hover:underline">Back to Login</a>
+        </p>
+      </div>
+
+      <!-- Reset Password Form -->
+      <div id="resetPasswordForm" class="bg-white rounded-xl p-8 w-full hidden">
+        <h2 class="text-2xl font-bold text-yellow-800 mb-2 text-center">Update Password</h2>
+        <p class="text-gray-600 text-sm mb-6 text-center">Enter the code sent to your email and your new password</p>
+        <form id="resetForm" class="space-y-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input type="email" name="email" placeholder="Enter your email"
+                   class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Reset Code</label>
+            <input type="text" name="reset_code" placeholder="Enter the code"
+                   class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+            <input type="password" name="new_password" placeholder="Enter new password"
+                   class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" required>
+          </div>
+          <button type="submit"
+                  class="w-full py-2 bg-yellow-700 text-white font-semibold rounded-lg shadow hover:bg-yellow-800 transition">
+            Reset Password
+          </button>
+        </form>
+        <p class="mt-6 text-center text-sm text-gray-500">
+          Remember your password?
+          <a href="index.php" class="text-yellow-700 font-medium hover:underline">Back to Login</a>
+        </p>
       </div>
     </div>
-
   </div>
+</div>
+
 
 
   <!-- JS Logic -->
