@@ -93,17 +93,17 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
       </div>
 
       <!-- Title -->
-      <h1 class="text-2xl md:text-5xl font-bold text-yellow-500 mb-2 typing">
+      <h1 class="text-2xl md:text-5xl font-bold text-yellow-500 mb-2" style="text-shadow: 2px 2px 6px rgba(0,0,0,0.3);">
         P R M S U
       </h1>
 
       <!-- Subtitle & Features -->
-      <div class="bg-white/100 p-4 rounded-xl flex flex-col items-center text-center">
+      <div class="bg-white/100 p-4 flex flex-col items-center text-center">
         <p class="text-base md:text-2xl text-gray-700 mb-3 logo typing-delay">
-          RFID Sticker Vehicle Access Monitoring System
+          Vehicle Access Monitoring System
         </p>
-        <ul class="space-y-3 text-gray-500 font-medium text-sm md:text-lg">
-          <li>Real-time Vehicle Tracking</li>
+        <ul class="space-y-2 text-gray-500 font-medium text-sm md:text-lg">
+          <li>Vehicle Tracking Using RFID Sticker</li>
         </ul>
       </div>
     </div>
@@ -111,8 +111,8 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 
   <!-- RIGHT SIDE: Login Form -->
   <div class="w-full md:w-1/2 flex items-center justify-center bg-white px-6 py-10">
-    <div class="w-full max-w-md px-6 py-8 md:py-12 rounded-xl fade-in">
-      <h2 id="title1" class="text-2xl md:text-4xl font-bold text-yellow-800 mb-2 text-center">
+    <div class="w-full max-w-md px-6 py-8 md:py-12 rounded-xl ">
+      <h2 id="title1" class="text-2xl md:text-4xl font-bold text-yellow-800 mb-2 text-center fade-in">
         Welcome back!
       </h2>
       <p id="title2" class="text-sm text-gray-500 mb-6 text-center">
