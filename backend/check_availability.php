@@ -42,7 +42,7 @@ if (isset($_POST['plate_number'])) {
                 $response['message'] = "Plate number is not Registered.";
             } else {
                 $response['exists'] = true;
-                $response['message'] = "Plate number exists with unknown status.";
+                $response['message'] = "Plate number has already been registered.";
             }
         } else {
             $response['exists'] = false;
