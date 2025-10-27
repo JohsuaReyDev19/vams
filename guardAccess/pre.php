@@ -50,7 +50,7 @@
                     </span>
                 </div>
                 <div class="my-3">
-                    <label class="text-gray-600 my-2">Submit Your OR/CR for verification</label><br>
+                    <label class="text-gray-600 my-2">Upload OR/CR for Verification</label><br>
                     <input type="file" id="imageInput" name="image_name" accept="image/*" required class="scanner-input">
                     <div id="previewContainer" class="my-2"></div>
                 </div>
@@ -271,7 +271,7 @@ imageInput.addEventListener('change', function(event) {
 });
 </script>
 
-<!-- AJAX Check Availability -->
+
 <script>
 $(document).ready(function () {
     $(document).on("keyup", "input[name='plate_number']", function () {
