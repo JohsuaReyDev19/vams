@@ -497,7 +497,7 @@ function showToast(message, type = "success") {
                 
 
                 if (data.length === 0) {
-                    rows = `<tr><td colspan="5" class="text-center py-4 text-gray-400">No Guard accounts found.</td></tr>`;
+                    rows = `<tr><td colspan="7" class="text-center py-4 text-gray-400">No Guard accounts found.</td></tr>`;
                 } else {
                     data.forEach(row => {
                         const formattedDate = new Date(row.created_at).toLocaleDateString('en-US', {
