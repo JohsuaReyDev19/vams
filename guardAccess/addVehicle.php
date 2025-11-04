@@ -215,7 +215,7 @@ $(document).ready(function () {
                         $("#plateStatus").html('<span style="color: red;">' + response.message + '</span>');
                         $("#btnAdd").prop("disabled", true).addClass("opacity-50 cursor-not-allowed");
                     } else {
-                        $("#plateStatus").html('<span style="color: green;">Plate number is not Registered.</span>');
+                        $("#plateStatus").html('<span style="color: red;">This plate number is not Registered.</span>');
                         $("#btnAdd").prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
                     }
                 },
