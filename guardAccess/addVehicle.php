@@ -20,7 +20,7 @@
 
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Purpose</label>
-        <input type="text" name="purpose" id="purpose" class="w-full px-4 py-2 border rounded-md"required>
+        <input type="text" name="purpose" id="purpose" class="w-full px-4 py-2 border rounded-md" required readonly>
       </div>
 
       <div>

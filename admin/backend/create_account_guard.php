@@ -22,21 +22,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rule = $_POST['purpose'];
 
     // ✅ 1. Check if username already exists
-    $checkStmt = $conn->prepare("SELECT id FROM admin_accounts WHERE username = ?");
-    $checkStmt->bind_param("s", $username);
-    $checkStmt->execute();
-    $checkStmt->store_result();
+    $checkUserStmt = $conn->prepare("SELECT id FROM admin_accounts WHERE username = ?");
+    $checkUserStmt->bind_param("s", $username);
+    $checkUserStmt->execute();
+    $checkUserStmt->store_result();
 
-    if ($checkStmt->num_rows > 0) {
+    if ($checkUserStmt->num_rows > 0) {
         echo json_encode(['status' => 'error', 'message' => 'Username already exists. Please choose another.']);
-        $checkStmt->close();
+        $checkUserStmt->close();
         $conn->close();
         exit;
     }
-    $checkStmt->close();
+    $checkUserStmt->close();
 
-    // ✅ 2. Insert if username is unique
-    $stmt = $conn->prepare("INSERT INTO admin_accounts (username, password_hash, full_name, contact_number, address, email, Rule) VALUES (?, ?, ?, ?, ?,?, ?)");
+    // ✅ 2. Check if email already exists
+    $checkEmailStmt = $conn->prepare("SELECT id FROM admin_accounts WHERE email = ?");
+    $checkEmailStmt->bind_param("s", $email);
+    $checkEmailStmt->execute();
+    $checkEmailStmt->store_result();
+
+    if ($checkEmailStmt->num_rows > 0) {
+        echo json_encode(['status' => 'error', 'message' => 'Email already exists. Please use another email.']);
+        $checkEmailStmt->close();
+        $conn->close();
+        exit;
+    }
+    $checkEmailStmt->close();
+
+    // ✅ 3. Insert if username and email are both unique
+    $stmt = $conn->prepare("INSERT INTO admin_accounts (username, password_hash, full_name, contact_number, address, email, Rule) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("sssssss", $username, $password_hash, $full_name, $contact_number, $address, $email, $rule);
 
     if ($stmt->execute()) {
@@ -49,4 +63,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn->close();
 }
 ?>
-
