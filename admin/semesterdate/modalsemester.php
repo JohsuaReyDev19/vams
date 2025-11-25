@@ -1,5 +1,6 @@
 
 <script>
+    
      $('#EndSemisterBtn').on('click', function () {
         $('#EndSemisterBtn').addClass('hidden');
         $('#StartSemisterBtn').removeClass('hidden');
@@ -26,6 +27,7 @@ $(document).ready(function() {
                     .text("Ongoing Semester")
                     .prop("disabled", true)
                     .addClass("opacity-50 cursor-not-allowed");
+                    $("#hideDate").addClass('hidden');
 
                 // ⛔ Disable date inputs
                 $("#startDateInput, #endDateInput").prop("disabled", true);

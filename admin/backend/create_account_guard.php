@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $checkUserStmt->store_result();
 
     if ($checkUserStmt->num_rows > 0) {
-        echo json_encode(['status' => 'error', 'message' => 'Username already exists. Please choose another.']);
+        echo json_encode(['status' => 'error', 'message' => 'Username already used. Please choose another.']);
         $checkUserStmt->close();
         $conn->close();
         exit;

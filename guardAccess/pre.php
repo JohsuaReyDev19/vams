@@ -71,40 +71,29 @@ document.getElementById('owner_type').addEventListener('change', function () {
 
     if (ownerType === 'student') {
         extraFields.innerHTML = `
-            <label class="text-sm">
-                        Student Id:
-                    </label>
-                    <input type="text" id="code" name="student_id_number" placeholder="Search Student ID" required class="scanner-input">
-                    <div id="student_status"></div>
-                    <label class="text-sm">
-                        Name:
-                    </label>
-                    <input type="text" id="student_name" name="student_name" placeholder="Student Name" required class="scanner-input">
-                    <label class="text-sm">
-                        Course:
-                    </label>
-                    <input type="text" id="course" name="course" placeholder="course" required class="scanner-input">
-                    <label class="text-sm">
-                        Year level:
-                    </label>
-                    <input type="text" id="year" name="year_level" placeholder="year_level" required class="scanner-input">
-                    <label class="text-sm">
-                        Contact
-                    </label>
-                    <input type="tel" id="contact" name="email" placeholder="contact" required class="scanner-input">
+            <label class="text-sm">Find Student Id:</label>
+            <input type="text" id="code" name="student_id_number" placeholder="Search Student ID" required class="scanner-input">
+            <label class="text-sm">Name:</label>
+            <input type="text" id="student_name" name="student_name" placeholder="Student Name" required class="scanner-input" readonly>
+            <label class="text-sm">Course:</label>
+            <input type="text" id="course" name="course" placeholder="course" required class="scanner-input" readonly>
+            <label class="text-sm">Year level:</label>
+            <input type="text" id="year" name="year_level" placeholder="year_level" required class="scanner-input" readonly>
+            <label class="text-sm">Contact</label>
+            <input type="tel" id="contact" name="email" placeholder="contact" required class="scanner-input" readonly>
         `;
     } else if (ownerType === 'faculty') {
         extraFields.innerHTML = `
             <input type="text" name="faculty_name" placeholder="Faculty Name" required class="scanner-input">
             <input type="text" name="department" placeholder="Department" required class="scanner-input">
-            <input type="text" name="position" placeholder="Position" required class="scanner-input">
+            <input type="text" name="position" placeholder="Position" required class="scanner-input" value="Nan" hidden>
             <input type="tel" name="email" placeholder="contact" required class="scanner-input">
         `;
     } else if (ownerType === 'ojt') {
         extraFields.innerHTML = `
             <input type="text" name="ojt_name" placeholder="OJT Name" required class="scanner-input">
-            <input type="text" name="company_name" placeholder="Company Name" required class="scanner-input">
-            <input type="text" name="supervisor_name" placeholder="Supervisor Name" required class="scanner-input">
+            <input type="text" name="company_name" placeholder="Department" required class="scanner-input">
+            <input type="text" name="supervisor_name" placeholder="Supervisor Name" required class="scanner-input" value="Nan" hidden>
             <input type="tel" name="email" placeholder="Contact" required class="scanner-input">
         `;
     }
@@ -130,29 +119,85 @@ $(document).on('keyup', '#code', function () {
                     $('#course').val(data.student.course);
                     $('#year').val(data.student.year);
                     $('#contact').val(data.student.contact_no);
+                    $('#student_status').html('<span class="text-green-600">Student found</span>');
+
+                    // Enable register button
+                    $("#registerVehicleBtn").prop("disabled", false)
+                        .removeClass("opacity-50 cursor-not-allowed");
 
                 } else {
-                    $('#student_name').val('');
-                    $('#course').val('');
-                    $('#year').val('');
-                    $('#contact').val('');
+                    $('#student_name, #course, #year, #contact').val('');
                     $('#student_status').html('<span class="text-red-600">Student not found</span>');
+
+                    // Disable register button
+                    $("#registerVehicleBtn").prop("disabled", true)
+                        .addClass("opacity-50 cursor-not-allowed");
                 }
             },
             error: function () {
                 $('#student_status').html('<span class="text-red-600">Error fetching student data</span>');
+                $("#registerVehicleBtn").prop("disabled", true)
+                    .addClass("opacity-50 cursor-not-allowed");
             }
         });
     } else {
         $('#student_name, #course, #year, #contact').val('');
         $('#student_status').html('');
+        $("#registerVehicleBtn").prop("disabled", false)
+            .removeClass("opacity-50 cursor-not-allowed");
     }
 });
 
+// Plate number check
+$(document).on("keyup", "input[name='plate_number']", function () {
+    let plateNumber = $(this).val();
+    if (plateNumber.length > 2) {
+        $.ajax({
+            type: "POST",
+            url: "../backend/check_availability.php",
+            data: { plate_number: plateNumber },
+            dataType: "json",
+            success: function (response) {
+                if (response.exists) {
+                    $("#plate_status").html('<span class="text-red-600">' + response.message + '</span>');
+                } else {
+                    $("#plate_status").html('<span class="text-green-600">' + response.message + '</span>');
+                }
+            },
+            error: function () {
+                $("#plate_status").html('<span style="color: red;">Error checking plate number.</span>');
+                $("#registerVehicleBtn").prop("disabled", true).addClass("opacity-50 cursor-not-allowed");
+            }
+        });
+    } else {
+        $("#plate_status").html("");
+        $("#registerVehicleBtn").prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
+    }
+});
 
-// Form Submission
+// Form Submission with validation
 document.getElementById('vehicleForm').addEventListener('submit', function (e) {
     e.preventDefault();
+
+    const ownerType = document.getElementById('owner_type').value;
+
+    // 🚨 Prevent submit if student fields are empty
+    if (ownerType === 'student') {
+        let studentName = document.getElementById('student_name').value.trim();
+        let course = document.getElementById('course').value.trim();
+        let year = document.getElementById('year').value.trim();
+        let contact = document.getElementById('contact').value.trim();
+
+        if (studentName === "" || course === "" || year === "" || contact === "") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Student Not Found',
+                text: 'Please search a valid Student ID. Student information is required!',
+                confirmButtonColor: '#d33'
+            });
+            return; // ❌ STOP submission
+        }
+    }
 
     Swal.fire({
         title: 'Confirm Registration',
@@ -188,7 +233,6 @@ document.getElementById('vehicleForm').addEventListener('submit', function (e) {
                         title: 'Your Vehicle is Now Registered',
                         text: data.message,
                         confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'OK'
                     }).then(() => {
                         document.getElementById('vehicleForm').reset();
                         document.getElementById('extraFields').innerHTML = '';
@@ -200,20 +244,18 @@ document.getElementById('vehicleForm').addEventListener('submit', function (e) {
                 } else {
                     Swal.fire({
                         icon: 'warning',
-                        title: 'warning!',
+                        title: 'Warning!',
                         text: data.message,
                         confirmButtonColor: '#d33',
-                        confirmButtonText: 'Try Again'
                     });
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Server Error!',
                     text: 'An error occurred. Please try again later.',
-                    confirmButtonColor: '#d33'
+                    confirmButtonColor: '#d33',
                 });
             })
             .finally(() => {
@@ -223,8 +265,6 @@ document.getElementById('vehicleForm').addEventListener('submit', function (e) {
         }
     });
 });
-
-
 
 // Image Preview + File Size Validation
 const imageInput = document.getElementById('imageInput');
@@ -272,6 +312,7 @@ imageInput.addEventListener('change', function(event) {
 </script>
 
 
+
 <script>
 $(document).ready(function () {
     $(document).on("keyup", "input[name='plate_number']", function () {
@@ -284,11 +325,9 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (response) {
                     if (response.exists) {
-                        $("#plate_status").html('<span style="color: red;">' + response.message + '</span>');
-                        $("#registerVehicleBtn").prop("disabled", true).addClass("opacity-50 cursor-not-allowed");
+                        $("#plate_status").html('<span class="text-red-600">' + response.message + '</span>');
                     } else {
-                        $("#plate_status").html('<span style="color: red;">Plate number is not Registered.</span>');
-                        $("#registerVehicleBtn").prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
+                        $("#plate_status").html('<span class="text-green-600">' + response.message + '</span>');
                     }
                 },
                 error: function () {
@@ -303,31 +342,40 @@ $(document).ready(function () {
     });
 
     $(document).on("keyup", "input[name='student_id_number']", function () {
-        let studentID = $(this).val();
-        if (studentID.length > 3) {
-            $.ajax({
-                type: "POST",
-                url: "../backend/check_availability.php",
-                data: { student_id_number: studentID },
-                dataType: "json",
-                success: function (response) {
-                    if (response.exists) {
-                        $("#student_status").html('<span style="color: red;">' + response.message + '</span>');
-                        $("#registerVehicleBtn").prop("disabled", true).addClass("opacity-50 cursor-not-allowed");
-                    } else {
-                        $("#student_status").html('<span style="color: green;">' + response.message + '</span>');
-                        $("#registerVehicleBtn").prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
-                    }
-                },
-                error: function () {
-                    $("#student_status").html('<span style="color: red;">Error checking student ID.</span>');
-                    $("#registerVehicleBtn").prop("disabled", true).addClass("opacity-50 cursor-not-allowed");
+    let studentID = $(this).val();
+
+    if (studentID.length > 3) {
+        $.ajax({
+            type: "POST",
+            url: "../backend/check_availability.php",
+            data: { student_id_number: studentID },
+            dataType: "json",
+
+            success: function (response) {
+
+                if (response.message === "Student not found.") {
+                    $("#student_status").html('<span style="color: red;">' + response.message + '</span>');
+                    $("#registerVehicleBtn").prop("disabled", true)
+                        .addClass("opacity-50 cursor-not-allowed");
+                } else {
+                    $("#student_status").html('<span style="color: green;">' + response.message + '</span>');
+                    $("#registerVehicleBtn").prop("disabled", false)
+                        .removeClass("opacity-50 cursor-not-allowed");
                 }
-            });
-        } else {
-            $("#student_status").html("");
-            $("#registerVehicleBtn").prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
-        }
-    });
+            },
+
+            error: function () {
+                $("#student_status").html('<span style="color: red;">Error checking student ID.</span>');
+                $("#registerVehicleBtn").prop("disabled", true)
+                    .addClass("opacity-50 cursor-not-allowed");
+            }
+        });
+    } else {
+        $("#student_status").html("");
+        $("#registerVehicleBtn").prop("disabled", false)
+            .removeClass("opacity-50 cursor-not-allowed");
+    }
+});
+
 });
 </script>
