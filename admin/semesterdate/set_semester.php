@@ -29,6 +29,65 @@ $(document).ready(function() {
         }
     }, "json");
 
+    // Enable editing
+    $("#EditSemesterBtn").click(function () {
+
+        $("#startDateInput, #endDateInput").prop("disabled", false);
+
+        $("#StartSemesterBtn")
+            .text("Save Changes")
+            .prop("disabled", false)
+            .removeClass("opacity-50 cursor-not-allowed");
+
+        $("#EditSemesterBtn").addClass("hidden");
+
+        // Change button mode
+        $("#StartSemesterBtn").off("click").on("click", function () {
+
+            let startDate = $("#startDateInput").val();
+            let endDate = $("#endDateInput").val();
+
+            $.post("../database/semester.php", {
+                action: "edit",
+                start_date: startDate,
+                end_date: endDate
+            }, function (res) {
+
+                if (res.success) {
+
+                    Swal.fire({
+                        icon: "success",
+                        title: "Updated",
+                        text: res.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    $("#startDateInput, #endDateInput").prop("disabled", true);
+
+                    $("#StartSemesterBtn")
+                        .text("Ongoing Semester")
+                        .prop("disabled", true)
+                        .addClass("opacity-50 cursor-not-allowed");
+
+                    $("#EditSemesterBtn").removeClass("hidden");
+
+                } else {
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: res.message
+                    });
+
+                }
+
+            }, "json");
+
+        });
+
+    });
+
     // 🔹 Handle Start Semester
     $("#StartSemesterBtn").click(function() {
         let startDate = $("#startDateInput").val();

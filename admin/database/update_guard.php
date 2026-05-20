@@ -15,6 +15,7 @@ if (!empty($_POST['id']) && !empty($_POST['fullname']) && !empty($_POST['contact
     $id       = intval($_POST['id']);
     $fullname = trim($_POST['fullname']);
     $contact  = trim($_POST['contact']);
+    $employeeId = trim($_POST['employeeId']);
     $address  = trim($_POST['address']);
     $username = trim($_POST['username']);
     $email    = trim($_POST['email']);
@@ -46,8 +47,8 @@ if (!empty($_POST['id']) && !empty($_POST['fullname']) && !empty($_POST['contact
     $checkEmail->close();
 
     // ✅ Proceed with update
-    $stmt = $conn->prepare("UPDATE admin_accounts SET full_name=?, contact_number=?, address=?, username=?, email=? WHERE id=?");
-    $stmt->bind_param("sssssi", $fullname, $contact, $address, $username, $email, $id);
+    $stmt = $conn->prepare("UPDATE admin_accounts SET full_name=?, contact_number=?, employeeId=?, address=?, username=?, email=? WHERE id=?");
+    $stmt->bind_param("ssssssi", $fullname, $contact, $employeeId, $address, $username, $email, $id);
 
     if ($stmt->execute()) {
         echo json_encode(["status" => "success"]);

@@ -110,7 +110,50 @@ try {
         } else {
             echo json_encode(["success" => true, "data" => ["start_date" => null, "end_date" => null]]);
         }
+    }elseif ($action === "edit") {
+
+    $start_date = $_POST['start_date'] ?? '';
+    $end_date   = $_POST['end_date'] ?? '';
+
+    if (!$start_date || !$end_date) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Missing dates"
+        ]);
+        exit;
     }
+
+    // Validate date range
+    if ($start_date > $end_date) {
+        echo json_encode([
+            "success" => false,
+            "message" => "End date must be later than start date"
+        ]);
+        exit;
+    }
+
+    $stmt = $conn->prepare("
+        UPDATE semester_control
+        SET start_date = ?, end_date = ?
+        WHERE id = 1
+    ");
+
+    $stmt->bind_param("ss", $start_date, $end_date);
+
+    if ($stmt->execute()) {
+        echo json_encode([
+            "success" => true,
+            "message" => "Semester dates updated successfully"
+        ]);
+    } else {
+        echo json_encode([
+            "success" => false,
+            "message" => "Failed to update semester"
+        ]);
+    }
+
+    $stmt->close();
+}
     else {
         echo json_encode(["success" => false, "message" => "Invalid request"]);
     }

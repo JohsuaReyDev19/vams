@@ -43,7 +43,7 @@ threading.Thread(target=auto_clear_tag, daemon=True).start()
 
 # Initialize Serial
 try:
-    ser = serial.Serial('COM3', 57600, timeout=1)
+    ser = serial.Serial('COM4', 57600, timeout=1)
     print("[INFO] Listening on COM3...")
 except serial.SerialException as e:
     print(f"[ERROR] Could not open COM port: {e}")

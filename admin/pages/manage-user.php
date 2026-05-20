@@ -21,36 +21,51 @@ $name = htmlspecialchars(urldecode($name));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Tailwind / UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Toastify CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
-    <!-- Toastify JS -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- Flowbite (ONLY ONCE) -->
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+    <!-- jQuery (ONLY ONCE) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Toastr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+    (function(){
+        emailjs.init("M2ARXMJ2XmiOfEPQq");
+    })();
+    </script>
 
     <title>Vehicles</title>
+
     <style>
         #ownerList {
-            scrollbar-width: none; /* Hide scrollbar for Firefox */
-            -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
         #ownerList::-webkit-scrollbar {
-            display: none; /* Hide scrollbar for Chrome, Safari, and Edge */
+            display: none;
         }
+
         .fade-in {
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 0.3s ease-out forwards;
         }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -141,6 +156,15 @@ $name = htmlspecialchars(urldecode($name));
                                     required
                                 >
 
+                                <label for="contact" class="block text-sm font-medium text-gray-700">Employee Id</label>
+                                <input 
+                                    type="text" 
+                                    id="employeeId" 
+                                    class="mt-1 p-2 w-full border rounded-md"
+                                    placeholder="Enter employee id"
+                                    required
+                                >
+
                                 <label for="address" class="block text-sm font-medium text-gray-700 mt-4">Address</label>
                                 <input type="text" id="address" class="mt-1 p-2 w-full border rounded-md" required>
 
@@ -197,6 +221,15 @@ $name = htmlspecialchars(urldecode($name));
                 required
             >
             <p class="validator-hint">Must be 11 digits [0-9]{11}</p>
+            <label for="contact" class="block text-sm font-medium text-gray-700">Employee id</label>
+            <input 
+                type="text" 
+                id="employeeId" 
+                name="employeeId"
+                class="mt-1 p-2 w-full border rounded-md" 
+                placeholder="Enter Employee id" 
+                required
+            >
 
             <label for="address" class="block text-sm font-medium text-gray-700 mt-4">Address</label>
             <input type="text" id="address" name="address" class="mt-1 p-2 w-full border rounded-md" placeholder="Enter address" required>
@@ -213,7 +246,18 @@ $name = htmlspecialchars(urldecode($name));
 
             <div class="mt-6 flex justify-end space-x-4">
                 <p id="hideModal" class="bg-gray-400 text-white px-4 py-2 rounded-md cursor-pointer">Cancel</p>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
+                <button type="submit" id="submitBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center justify-center gap-2">
+                    <span id="btnText">Submit</span>
+
+                    <!-- Spinner (hidden by default) -->
+                    <svg id="btnSpinner" class="hidden animate-spin h-4 w-4 text-white"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                            stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8v8H4z"></path>
+                    </svg>
+                </button>
             </div>
         </form>
     </div>
@@ -234,7 +278,9 @@ $name = htmlspecialchars(urldecode($name));
 
     <div class="my-1 p-2 text-center gap-1">
         <div class="flex justify-center gap-3 items-center">
-            <p class="text-sm text-gray-600 copy-text">default123</p>
+            <p id="generatedPassword" class="text-sm text-gray-600">
+    default123
+</p>
             <button class="copy-btn bg-blue-100 text-blue-600 text-sm">Copy</button>
         </div>
     </div>
@@ -340,6 +386,7 @@ $(document).on('click', '.showProfile', function() {
                 $("#fullname").val(response.data.full_name);
                 $("#mail").val(response.data.email);
                 $("#contact").val(response.data.contact_number);
+                $("#employeeId").val(response.data.employeeId);
                 $("#address").val(response.data.address);
                 $("#username").val(response.data.username);
 
@@ -374,7 +421,8 @@ $(document).on('submit', '#updateProfileForm', function(e) {
             id: $("#editVehicleId").val(),
             fullname: $("#fullname").val(),
             contact: $("#contact").val(),
-            address: $("#address").val(),
+            employeeId: $("#employeeId").val(),
+            address: $("#address").val(),  
             username: $("#username").val(),
             email: $("#mail").val()   // ✅ FIXED
         },
@@ -451,67 +499,56 @@ function showToast(message, type = "success") {
         $('#addModal').addClass('hidden');
     });
 
-    $(document).ready(function () {
-        $('#createAccountForm').on('submit', function (e) {
-            e.preventDefault();
+    $('#createAccountForm').on('submit', function (e) {
+        e.preventDefault();
 
-            $.ajax({
-                url: '../backend/create_account_guard.php',
-                type: 'POST',
-                data: $(this).serialize(), // Now works because we added name=""
-                success: function (response) {
-                    let res;
-                    try {
-                        res = JSON.parse(response);
-                    } catch (e) {
-                        toastr.error('Invalid server response.');
-                        return;
-                    }
+        // BUTTON LOADING START
+        $('#submitBtn').prop('disabled', true);
+        $('#btnText').text('Sending...');
+        $('#btnSpinner').removeClass('hidden');
 
-                    if (res.status === 'success') {
-                        $('#username-copy').text($('#username').val()); // Set copied username
+        $.ajax({
+            url: '../backend/create_account_guard.php',
+            type: 'POST',
+            data: $(this).serialize(),
+            dataType: 'json',
 
-                        if (typeof my_modal_2 !== 'undefined') {
-                            my_modal_2.showModal();
-                        }
-                        
-                        Toastify({
-                            text: res.message,
-                            duration: 3000,
-                            close: true,
-                            gravity: "top",
-                            position: "right",
-                            backgroundColor: "#28a745",
-                            stopOnFocus: true
-                        }).showToast();
+            success: function (res) {
 
-                        loadAdminAccounts();
+                console.log(res);
 
-                        $('#createAccountForm')[0].reset();
-                        $('#addModal').addClass('hidden');
-                    } else {
-                        $('#messageError').text(res.message);
+                if (res.status === "success") {
 
-                        const errormessage = document.getElementById('messageError').innerText;
+                    $('#generatedPassword').text(res.password);
+                    document.getElementById('my_modal_2').showModal();
 
-                        if (errormessage !== '') {
-                            setTimeout(() => {
-                                $('#messageError').text('');
-                            }, 3000);
-                        }
+                    showToast(res.message, "success");
 
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
-                    toastr.error('AJAX request failed. Please check your connection or server.');
+                    loadAdminAccounts();
+
+                    $('#createAccountForm')[0].reset();
+                    $('#addModal').addClass('hidden');
+
+                } else {
+                    $('#messageError').text(res.message);
+
+                    setTimeout(() => {
+                        $('#messageError').text('');
+                    }, 3000);
                 }
-            });
-        });
+            },
 
-        // Cancel button to hide modal
-        $('#hideModal').on('click', function () {
-            $('#addModal').addClass('hidden');
+            error: function (xhr) {
+                console.log(xhr.responseText);
+                showToast("Server error or wrong path", "error");
+            },
+
+            complete: function () {
+                // BUTTON LOADING END (always runs)
+                $('#submitBtn').prop('disabled', false);
+                $('#btnText').text('Submit');
+                $('#btnSpinner').addClass('hidden');
+            }
         });
     });
 

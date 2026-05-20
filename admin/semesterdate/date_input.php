@@ -35,6 +35,10 @@
       class="hidden px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg shadow-sm text-sm transition duration-150 ease-in-out">
       End Semester
     </button>
+    <button id="EditSemesterBtn"
+      class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg">
+      Edit Semester
+  </button>
   </div>
 </div>
 
